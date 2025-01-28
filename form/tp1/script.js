@@ -9,10 +9,14 @@ const formProf=document.getElementById("form-prof");
 //Activer evenement 
 formProf.addEventListener("submit", function(event){
     event.preventDefault();
-    const nomProf=document.querySelector("#nom").value;
-    const prenomProf=document.querySelector("#prenom").value;
-     addProfesseur({nom:nomProf,prenom:prenomProf})
-      console.log(professeurs);
+    const inputNom=document.querySelector("#nom");
+    const errorNom=document.querySelector(`#${inputNom.id}Error`)
+    errorNom.textContent="Ce champ est obligatoire"
+    
+    const inputPrenom=document.querySelector("#prenom");
+
+     addProfesseur({nom:inputNom.value,prenom:inputPrenom.value})
+      
       formProf.reset(); 
     
      
