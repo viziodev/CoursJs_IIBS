@@ -10,8 +10,8 @@ const formProf=document.getElementById("form-prof");
 formProf.addEventListener("submit", function(event){
     event.preventDefault();
     const inputNom=document.querySelector("#nom");
-    const errorNom=document.querySelector(`#${inputNom.id}Error`)
-    errorNom.textContent="Ce champ est obligatoire"
+
+    inputNom.nextElementSibling.textContent="Ce champ est obligatoire"
     
     const inputPrenom=document.querySelector("#prenom");
 
