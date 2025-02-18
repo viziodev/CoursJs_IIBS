@@ -1,67 +1,91 @@
-const professeurs = [
-    {
-        nom:"Wane",
-        prenom:"Baila",
-    }
-];
+let professeurs =[]
+document.addEventListener("DOMContentLoaded", function(){
+    loadData();
+    desactiveClass()
+})
+
+
+
 //Recuperer le formualire
 const formProf=document.getElementById("form-prof");
 const inputNom=document.querySelector("#nom");
-const errorNom=inputNom.nextElementSibling
 const inputPrenom=document.querySelector("#prenom");
-const errorPrenom=document.querySelector(`#${inputPrenom.id}Error`);
+const formFields=[inputNom,inputPrenom]
 //Soummission Formulaire
 formProf.addEventListener("submit", function(event){
     event.preventDefault();
     //Gestion Error sur le nom
-   
-     if (inputNom.value=="") {
-         errorNom.textContent="Ce champ est obligatoire"
-          //application des classes error
-          inputNom.classList.add("is-invalid")
-          errorNom.classList.add("invalid-feedback")
-         return;
-     }
-          inputNom.classList.remove("is-invalid")
-          errorNom.classList.remove("invalid-feedback")
-          inputNom.classList.add("is-valid")
-          errorNom.classList.add("valid-feedback")
-       //Gestion Error sur le prenom
-      
-     if (inputPrenom.value=="") {
-         errorPrenom.textContent="Ce champ est obligatoire"
-          //application des classes error
-          inputPrenom.classList.add("is-invalid")
-          errorPrenom.classList.add("invalid-feedback")
-        
-         return;
-     }
-     inputPrenom.classList.remove("is-invalid")
-     errorPrenom.classList.remove("invalid-feedback")
-     inputPrenom.classList.add("is-valid")
-     errorPrenom.classList.add("valid-feedback")
-   
+    for (const field of formFields) {
+        if (isEmpty(field.value)) {
+            showErrorMessage(field)
+           return;
+       }
+       showSucces(field)
+    }
      //Ajout dans la liste 
     addProfesseur({nom:inputNom.value,prenom:inputPrenom.value})
     formProf.reset();    
 })
+//
 
-inputNom.addEventListener("focus",() => {
-    if(inputNom.classList.contains("is-invalid") ){
-      
-        inputNom.classList.remove("is-invalid")
-        errorNom.classList.remove("invalid-feedback")
-        errorNom.textContent=""
+
+
+
+//Gestion des fonctions de validation
+function isEmpty(data){
+  return data==""
+}
+
+//Gestion des fonctions Errors
+function showErrorMessage(field,smsError="Ce champ est obligatoire"){
+  
+     const errorField=field.nextElementSibling
+     errorField.textContent=smsError
+    //application des classes error
+    field.classList.add("is-invalid")
+    errorField.classList.add("invalid-feedback")
+}
+
+function showSucces(field){
+    const errorField=field.nextElementSibling
+    //application des classes error
+    field.classList.remove("is-invalid")
+    errorField.classList.remove("invalid-feedback")
+    field.classList.add("is-valid")
+    errorField.classList.add("valid-feedback")
+}
+
+const allInputs=document.getElementsByClassName("form-control");
+function desactiveClass(){
+    for (const input of allInputs) {
+        input.addEventListener("focus",() => {
+            const inputError=input.nextElementSibling
+            if(input.classList.contains("is-invalid") ){
+                input.classList.remove("is-invalid")
+                inputError.classList.remove("invalid-feedback")
+                inputError.textContent=""
+            }
+            if(input.classList.contains("is-valid")){
+                input.classList.remove("is-valid")
+                inputError.classList.remove("valid-feedback")
+            }
+        
+        }) 
     }
-
-    if(inputNom.classList.contains("is-valid")){
-        inputNom.classList.remove("is-valid")
-        errorNom.classList.remove("valid-feedback")
-    }
-
-})
+    
+}
 
 
+//Use Case
 function addProfesseur(professeur){
     professeurs.push(professeur);
+    localStorage.setItem("professeur",JSON.stringify(professeur));
+
 }
+function loadData(){
+    professeurs=localStorage.key("professeurs")==null ? JSON.parse(localStorage.getItem("professeurs")):[]
+}
+
+
+
+
