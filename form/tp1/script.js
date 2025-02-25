@@ -11,7 +11,7 @@ const formProf=document.getElementById("form-prof");
 const inputNom=document.querySelector("#nom");
 const inputPrenom=document.querySelector("#prenom");
 const selectGrade=document.querySelector("#grade");
-const formFields=[inputNom,inputPrenom,selectGrade]
+
 
 const checkboxMatieres=document.querySelectorAll("input[type=checkbox]");
 
@@ -29,12 +29,15 @@ checkboxMatieres.forEach((checkbox => {
     })
 }))
 
-
+//const formFields=[inputNom,inputPrenom,selectGrade]
+let formEltsId=["nom","prenom","grade"]
+const formFields=formProf.elements
 //Soummission Formulaire
 formProf.addEventListener("submit", function(event){
     event.preventDefault();
     //Gestion Error sur le nom
-    for (const field of formFields) {
+    for (const fieldId of formEltsId) {
+        let field=formFields[fieldId];
         if (Validator.isEmpty(field.value)) {
             Validator.showErrorMessage(field)
            return;
